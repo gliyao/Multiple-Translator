@@ -1,0 +1,28 @@
+<html>
+<head>
+<script type="text/javascript">
+	var languageFrom = "en";
+	var languageTo = "zh-TW";
+	var text = "translate this.";
+
+	function translate() {
+		window.mycallback = function(response) { 
+			//alert(response); 
+			var result=document.createTextNode(response);
+			document.getElementById("Result").appendChild(result);
+		}
+
+		var s = document.createElement("script");
+		s.src = "http://api.microsofttranslator.com/V2/Ajax.svc/Translate?oncomplete=mycallback&appId=0142F39F370E1FFCBA57843843E9940DC271CAAB&from=" + languageFrom + "&to=" + languageTo + "&text=" + text;
+		document.getElementsByTagName("head")[0].appendChild(s);
+	}
+	
+	//translate();
+</script>
+</head>
+<body>
+
+<button type="button" onclick="translate()">Click Me!</button>
+<div id="Result">123</div>
+</body>
+</html>

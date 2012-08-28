@@ -1,0 +1,49 @@
+#hd{
+	/*background-color:#ffff99;*/
+	font-family:"Courier New";
+	text-align:center;
+	font-size:x-large;
+}
+
+#hd #me{
+	font-size:small;
+	text-align:right;
+}
+
+#bd{
+	background-color:#ffffff;
+	/*font-family:"Courier New";*/
+}
+
+
+#fd{
+	/*background-color:#66ccff;
+	text-align:right;*/
+}
+#ControlBar{
+	background-color:#e6e6e5;
+}
+#LangInput{
+	
+}
+#LangOutput{
+	/*text-align:center;*/
+	text-align:center;
+}
+textarea{
+    width:99.5%;
+}
+#LangInput{
+}
+
+#Bing{
+	color:#ed6f23;
+}
+#Google{
+	color:#57c464;
+}
+.TranslateResult{
+	text-align:center;
+	margin-left:10px;
+}
+

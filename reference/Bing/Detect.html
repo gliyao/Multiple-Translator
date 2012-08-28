@@ -1,0 +1,25 @@
+<html>
+<head>
+<script type="text/javascript">
+		//可能是編碼的關係讓中文測不出來
+        var text = "啥";
+		var languageFrom = "en";
+		var languageTo = "zh-TW";
+		//var text = "translate this.";
+		var myAppId="0142F39F370E1FFCBA57843843E9940DC271CAAB";
+
+        function detect() {
+            window.mycallback = function (response) { alert("The detected language is:" +text+ response); }
+
+            var s = document.createElement("script");
+            s.src = "http://api.microsofttranslator.com/V2/Ajax.svc/Detect?oncomplete=mycallback&appId="+myAppId+"&text=" + text;
+            document.getElementsByTagName("head")[0].appendChild(s);
+        }
+</script>
+</head>
+<body>
+
+<button type="button" onclick="detect()">Click Me!</button>
+<div id="Result">123</div>
+</body>
+</html>

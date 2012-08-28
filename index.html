@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Multiple Translator</title>
+        <link rel="stylesheet" type="text/css" href="./lib/translate.css">
+        <script type="text/javascript" src="./lib/fix_ie.js"></script>
+		<script type="text/javascript" src="./lib/languages.js"></script>
+		
+    </head>
+    <body>
+        <div id="hd">
+            <br><b>Multiple Tanslator</b></br>
+			<div id='me'>
+				If you have any suggestion, please mail me.
+				<a href="mailto:gliyao@gmail.com">
+					<img src="http://services.nexodyne.com/email/icon/gUmafeP7/6QmR8qo%3D/R01haWw%3D/0/image.png" alt='mail me'>
+				</a>
+				<script type='text/javascript' src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>
+				<script type='text/javascript' src='./lib/fb_like_btn.js'></script>
+			</div>
+			
+        </div>
+		<div id="bd">
+            <div id="ControlBar">
+                    From<select id = "langFrom"></select>
+                    translate to<select id = "langTo"></select>
+                    <button id='Tanslate'type="button">Translate</button>
+                    <button id='LangSwitch' type="button">Switch</button>
+            </div>
+            <div id="LangInput">
+                <TEXTAREA rows="5" cols="10" id="sourceText"></TEXTAREA>
+            </div>
+            <div id="LangOutput">
+            	
+                <div>
+                    <img src='./img/Google_translate_logo.gif' alt='google translate logo'>
+                    <div id="Google" class='TranslateResult'>
+                    </div>
+                </div>
+                <div>
+                    <img src='./img/Bing_translate_logo.gif' alt='bing translate logo'>
+                    <div id="Bing" class='TranslateResult'>
+                    </div>
+                </div>
+            </div>
+            </div>
+		
+        <div id="fd">
+			
+        </div>
+        
+        
+		<script type="text/javascript" src="./lib/translator.js"></script>
+    </body>
+</html>
