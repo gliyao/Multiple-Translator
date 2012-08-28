@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/MultipleTranslator/!svn/ver/6/trunk/MultipleTranslator/lib
+END
+Module.js
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/MultipleTranslator/!svn/ver/7/trunk/MultipleTranslator/lib/Module.js
+END
+languages.js
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/MultipleTranslator/!svn/ver/6/trunk/MultipleTranslator/lib/languages.js
+END
+translator.js
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/MultipleTranslator/!svn/ver/17/trunk/MultipleTranslator/lib/translator.js
+END
+translate.css
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/MultipleTranslator/!svn/ver/14/trunk/MultipleTranslator/lib/translate.css
+END
+test.js
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/MultipleTranslator/!svn/ver/17/trunk/MultipleTranslator/lib/test.js
+END
+control.js
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/MultipleTranslator/!svn/ver/9/trunk/MultipleTranslator/lib/control.js
+END
+fix_ie.js
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/MultipleTranslator/!svn/ver/17/trunk/MultipleTranslator/lib/fix_ie.js
+END

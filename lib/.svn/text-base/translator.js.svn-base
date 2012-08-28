@@ -1,0 +1,229 @@
+﻿/*
+ * @author : Liyao
+ * last update:2011.1.7
+ */
+var MT = MT || {};
+MT.NAME = "Multiple Translator";
+MT.VERSION = 0.1;
+
+//MultipleTranslator
+MT.Start = function(){
+	//Main function
+//	console.log('Starting');
+	MT.init();
+	
+	MT.source= new MT.Source('sourceText');
+	MT.setting=new MT.Setting('langFrom','langTo');
+	MT.trslateBtn=document.getElementById('Tanslate');
+	MT.trslateBtn.onclick=this.translate;
+	document.getElementById('sourceText').onkeyup=MT.keyUpTranslate;
+
+	//add translators	
+	MT.addTranslator(new MT.TGoogle("Google"));
+	MT.addTranslator(new MT.TBing("Bing"));
+};
+
+MT.init = function(){
+	MT.translating=false;
+	MT.is_dirty=false;
+	MT.delay=800;
+	MT.translators=[];
+};
+
+/**
+ * add translator to MT.translators
+ * @param {Object} t
+ */
+MT.addTranslator=function(t){
+	//some setting
+	t.source=this.source;
+	t.setting=this.setting;
+	//t.setIndex=MT.tranlators.indexOf(t);
+	MT.translators.push(t);
+	t.setIndex(MT.translators.indexOf(t));
+};
+
+MT.translate = function(){
+	//console.log('MT.translate');
+    if (!MT.translating) {
+        MT.translating = true;
+        MT.source.refreshText();//refresh source text
+        MT.translators.forEach(function(element, index, array){
+			element.translate();
+        });
+    }
+    MT.translating = false;
+    if (MT.is_dirty) {
+        MT.is_dirty = false;
+    }
+};
+/**
+ * for Instant Translation
+ */
+MT.keyUpTranslate = function(){
+    if (!MT.is_dirty) {// add small delay here to create "intent"
+        setTimeout(function(){
+            MT.translate();
+        }, MT.delay);
+    }
+    MT.is_dirty = true;
+};
+//end of class MultipleTranslator
+
+
+//Static calss Utility
+MT.Utility = function(){}
+MT.Utility.head = window.document.getElementsByTagName("head")[0];
+
+//class Source
+/**
+ * input textarea's id
+ * this class have two public variable 
+ * 1. source: HTML Object<Textarea> 
+ * 2. text: encode from source value.
+ * @param {Object} TextArea
+ */
+MT.Source=function(TextArea){
+	this.setSource = function(source){
+        this.source = document.getElementById(source);
+    };
+    this.refreshText = function(){
+        this.text = encodeURIComponent(this.source.value);//經過編碼中->英才不會變亂碼
+    };
+    this.setSource(TextArea);
+    this.refreshText();
+}
+//end of Source
+
+//class Setting
+/**
+ * Control languages settings, switch language code
+ * @param {Object} langFrom
+ * @param {Object} langTo
+ */
+MT.Setting=function(langFrom, langTo){
+	this.lf='';
+	this.lt='';
+	this.init=function(langFrom,langTo){
+		this.SwitchBtn=document.getElementById('LangSwitch');
+		
+		if(this.SwitchBtn.addEventListener){
+			this.SwitchBtn.addEventListener('click',this.switchLang,false);
+		}		
+		this.langF=document.getElementById(langFrom);
+		this.langT=document.getElementById(langTo);
+		
+		//add Language selections for chrome & ff
+//        for (var lang in Languages) {
+//            this.langF.innerHTML += '<option value = "' + lang + '">' + lang + '</option>';
+//            this.langT.innerHTML += '<option value = "' + lang + '">' + lang + '</option>';
+//        }
+
+		//add Language selections for IE
+        for (var lang in Languages) {
+            var NewOp = document.createElement('option');
+            NewOp.text = lang;
+            NewOp.value = lang;
+            this.langF.add(NewOp);
+            var NewOp2 = document.createElement('option');
+            NewOp2.text = lang;
+            NewOp2.value = lang;
+            this.langT.add(NewOp2);
+        }
+		
+		
+		//Default lang setting
+		this.langT.value="CHINESE_TRADITIONAL";
+		this.langF.value="ENGLISH";
+		
+		//lang code
+	    this.lf = Languages[this.langF.value];
+	    this.lt = Languages[this.langT.value];
+	}
+	
+	//逼不得已使用絕對位置
+    this.switchLang = function(e){
+		//console.log('switchLang');
+		var s=MT.setting;
+        var temp = s.langF.value;
+        s.langF.value = s.langT.value;
+        s.langT.value = temp;
+        temp = s.lf;
+        s.lf = s.lt;
+        s.lt = temp;
+    };
+	
+	//init
+	this.init(langFrom,langTo);
+}
+//end of class Setting
+
+//class Translator
+//public Translator(string appId)
+MT.Translator = function(appId,dist){
+    this.url = "";
+	this.d=document.getElementById(dist);
+    this.getAppId = function(){return appId;};
+    this.setAppId = function(newAppId){appId = newAppId;};
+	this.setIndex=function(i){this.index=i;};
+    this.translate = function(){
+		//console.log(this.getUrl());
+        if (this.getUrl != "") {
+            var newScript = window.document.createElement('script');
+            newScript.src = this.getUrl();
+            MT.Utility.head.appendChild(newScript);
+			//console.log(this.getUrl());
+        } else {
+            throw new Error("url is null!");
+        }
+    };
+    this.writeResponse = function(response){
+        this.d.innerHTML = response;
+    };
+}
+//end of class Translator
+
+//class TGoogle : Translator
+//public TGoogle
+MT.TGoogle = function(dist){
+    MT.Translator.call(this, "AIzaSyAPuiCrkNL3KJHK9ckUwxZst-NAna9uPNc",dist);
+    
+	/**
+     * rewrite Translator.getUrl()
+     */
+	this.getUrl = function(){
+        return 'https://www.googleapis.com/language/translate/v2?key=' + this.getAppId() + '&source=' + this.setting.lf + '&target=' + this.setting.lt + '&callback=MT.translators['+this.index+'].writeResponse&q=' + this.source.text;
+    };
+	
+	/**
+	 * rewrite Translator.writeResponse()
+	 * because google have different response structure.
+	 * @param {Object} response
+	 */
+    this.writeResponse = function(response){
+        this.d.innerHTML = response.data.translations[0].translatedText;
+    };
+}
+MT.TGoogle.prototype = new MT.Translator();
+MT.TGoogle.prototype.constructor = MT.TGoogle;
+//end of class TGoogle
+
+
+//class TBing : Translator
+//public TBing
+MT.TBing = function(dist){
+    MT.Translator.call(this, "0142F39F370E1FFCBA57843843E9940DC271CAAB",dist);
+	/**
+	 * rewrite Translator.getUrul()
+	 */
+    this.getUrl = function(){
+        return "http://api.microsofttranslator.com/V2/Ajax.svc/Translate?oncomplete=MT.translators["+this.index+"].writeResponse&appId=" + this.getAppId() + "&from=" + this.setting.lf + "&to=" + this.setting.lt + "&text=" + this.source.text;
+    };
+}
+MT.TBing.prototype = new MT.Translator();
+MT.TBing.prototype.constructor = MT.TBing;
+//end of class TBing
+
+
+
+MT.Start();
